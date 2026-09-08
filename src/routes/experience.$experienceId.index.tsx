@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { getExperience } from "@/lib/atlas/data";
 import { completedCount, purchase, toggleFollow, useAtlas } from "@/lib/atlas/store";
 
-export const Route = createFileRoute("/experience/$experienceId")({
+export const Route = createFileRoute("/experience/$experienceId/")({
   head: () => ({
     meta: [
       { title: "Experience — Atlas" },
