@@ -22,7 +22,7 @@ export type CollectedItem = {
 
 export type AtlasState = {
   purchased: string[];
-  progress: Record<string, { completedStops: string[]; completedAt?: string }>;
+  progress: Record<string, { completedStops: string[]; completedAt?: string | undefined }>;
   collection: CollectedItem[];
   achievements: string[];
   following: string[];
