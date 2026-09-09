@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Compass, Map, Layers, User } from "lucide-react";
+import { Compass, Flag, Layers, Map, User } from "lucide-react";
 import type { ReactNode } from "react";
 
 const navClass =
@@ -21,7 +21,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               </li>
               <li>
                 <Link to="/my-experiences" className={navClass}>
-                  <Layers className="h-[22px] w-[22px]" strokeWidth={1.75} />
+                  <Flag className="h-[22px] w-[22px]" strokeWidth={1.75} />
                   <span className="truncate">Quests</span>
                 </Link>
               </li>
@@ -39,7 +39,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               </li>
               <li>
                 <Link to="/collection" className={navClass}>
-                  <Compass className="h-[22px] w-[22px] opacity-0" strokeWidth={1.75} />
+                  <Layers className="h-[22px] w-[22px]" strokeWidth={1.75} />
                   <span className="truncate">Collection</span>
                 </Link>
               </li>
