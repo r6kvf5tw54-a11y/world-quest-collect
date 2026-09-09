@@ -22,9 +22,8 @@ import {
 } from "@/lib/atlas/store";
 
 export const Route = createFileRoute("/experience/$experienceId/run")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    stop: typeof search.stop === "string" ? search.stop : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): { stop?: string } =>
+    typeof search.stop === "string" ? { stop: search.stop } : {},
   head: () => ({
     meta: [
       { title: "On route — Atlas" },
