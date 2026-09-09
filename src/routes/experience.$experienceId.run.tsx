@@ -22,6 +22,9 @@ import {
 } from "@/lib/atlas/store";
 
 export const Route = createFileRoute("/experience/$experienceId/run")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    stop: typeof search.stop === "string" ? search.stop : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "On route — Atlas" },
@@ -44,6 +47,7 @@ type Phase = "travel" | "arrived" | "content" | "complete";
 function RunPage() {
   const { experienceId } = Route.useParams();
   const experience = getExperience(experienceId);
+  const { stop: stopParam } = Route.useSearch();
   const state = useAtlas();
 
   const [index, setIndex] = useState(0);
@@ -57,13 +61,19 @@ function RunPage() {
 
   useEffect(() => {
     if (!experience || synced) return;
-    if (doneStops.length === experience.stops.length && doneStops.length > 0) {
+    const fromMap = stopParam
+      ? experience.stops.findIndex((s) => s.id === stopParam)
+      : -1;
+    if (fromMap !== -1) {
+      setIndex(fromMap);
+      setPhase("travel");
+    } else if (doneStops.length === experience.stops.length && doneStops.length > 0) {
       setPhase("complete");
     } else {
       setIndex(nextStopIndex(state, experienceId));
     }
     setSynced(true);
-  }, [experience, synced, state, experienceId, doneStops.length]);
+  }, [experience, synced, state, experienceId, doneStops.length, stopParam]);
 
   if (!experience) {
     return (
