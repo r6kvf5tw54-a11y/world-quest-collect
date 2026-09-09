@@ -12,7 +12,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <div className="relative flex min-h-screen flex-col sm:min-h-[880px]">
           <main className="flex-1 overflow-y-auto pb-28">{children}</main>
           <nav className="absolute bottom-0 left-0 right-0 border-t border-border bg-background/85 px-2 pb-5 pt-2 backdrop-blur-xl">
-            <ul className="grid grid-cols-4">
+            <ul className="grid grid-cols-5 items-end">
               <li>
                 <Link to="/" activeOptions={{ exact: true }} className={navClass}>
                   <Compass className="h-[22px] w-[22px]" strokeWidth={1.75} />
@@ -21,13 +21,25 @@ export function AppShell({ children }: { children: ReactNode }) {
               </li>
               <li>
                 <Link to="/my-experiences" className={navClass}>
-                  <Map className="h-[22px] w-[22px]" strokeWidth={1.75} />
-                  <span className="truncate">Experiences</span>
+                  <Layers className="h-[22px] w-[22px]" strokeWidth={1.75} />
+                  <span className="truncate">Quests</span>
+                </Link>
+              </li>
+              <li className="relative">
+                <Link
+                  to="/map"
+                  className="group flex flex-col items-center gap-1 text-[10px] font-semibold tracking-wide text-muted-foreground data-[status=active]:text-foreground"
+                  aria-label="Map"
+                >
+                  <span className="-mt-7 grid h-16 w-16 place-items-center rounded-full bg-primary text-primary-foreground shadow-frame ring-4 ring-background transition-transform active:scale-95 group-data-[status=active]:bg-ink">
+                    <Map className="h-7 w-7" strokeWidth={1.75} />
+                  </span>
+                  <span className="-mt-1 truncate">Map</span>
                 </Link>
               </li>
               <li>
                 <Link to="/collection" className={navClass}>
-                  <Layers className="h-[22px] w-[22px]" strokeWidth={1.75} />
+                  <Compass className="h-[22px] w-[22px] opacity-0" strokeWidth={1.75} />
                   <span className="truncate">Collection</span>
                 </Link>
               </li>

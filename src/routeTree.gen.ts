@@ -14,6 +14,8 @@ import { Route as CollectionRouteImport } from './routes/collection'
 import { Route as MyExperiencesRouteImport } from './routes/my-experiences'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as CreatorCreatorIdRouteImport } from './routes/creator.$creatorId'
+import { Route as MapIndexRouteImport } from './routes/map.index'
+import { Route as MapExperienceIdRouteImport } from './routes/map.$experienceId'
 import { Route as ExperienceExperienceIdIndexRouteImport } from './routes/experience.$experienceId.index'
 import { Route as ExperienceExperienceIdRunRouteImport } from './routes/experience.$experienceId.run'
 
@@ -42,6 +44,16 @@ const CreatorCreatorIdRoute = CreatorCreatorIdRouteImport.update({
   path: '/creator/$creatorId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MapIndexRoute = MapIndexRouteImport.update({
+  id: '/map/',
+  path: '/map/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MapExperienceIdRoute = MapExperienceIdRouteImport.update({
+  id: '/map/$experienceId',
+  path: '/map/$experienceId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExperienceExperienceIdIndexRoute =
   ExperienceExperienceIdIndexRouteImport.update({
     id: '/experience/$experienceId/',
@@ -61,6 +73,8 @@ export interface FileRoutesByFullPath {
   '/my-experiences': typeof MyExperiencesRoute
   '/profile': typeof ProfileRoute
   '/creator/$creatorId': typeof CreatorCreatorIdRoute
+  '/map/$experienceId': typeof MapExperienceIdRoute
+  '/map/': typeof MapIndexRoute
   '/experience/$experienceId/run': typeof ExperienceExperienceIdRunRoute
   '/experience/$experienceId/': typeof ExperienceExperienceIdIndexRoute
 }
@@ -70,6 +84,8 @@ export interface FileRoutesByTo {
   '/my-experiences': typeof MyExperiencesRoute
   '/profile': typeof ProfileRoute
   '/creator/$creatorId': typeof CreatorCreatorIdRoute
+  '/map/$experienceId': typeof MapExperienceIdRoute
+  '/map': typeof MapIndexRoute
   '/experience/$experienceId/run': typeof ExperienceExperienceIdRunRoute
   '/experience/$experienceId': typeof ExperienceExperienceIdIndexRoute
 }
@@ -80,6 +96,8 @@ export interface FileRoutesById {
   '/my-experiences': typeof MyExperiencesRoute
   '/profile': typeof ProfileRoute
   '/creator/$creatorId': typeof CreatorCreatorIdRoute
+  '/map/$experienceId': typeof MapExperienceIdRoute
+  '/map/': typeof MapIndexRoute
   '/experience/$experienceId/run': typeof ExperienceExperienceIdRunRoute
   '/experience/$experienceId/': typeof ExperienceExperienceIdIndexRoute
 }
@@ -91,6 +109,8 @@ export interface FileRouteTypes {
     | '/my-experiences'
     | '/profile'
     | '/creator/$creatorId'
+    | '/map/$experienceId'
+    | '/map/'
     | '/experience/$experienceId/run'
     | '/experience/$experienceId/'
   fileRoutesByTo: FileRoutesByTo
@@ -100,6 +120,8 @@ export interface FileRouteTypes {
     | '/my-experiences'
     | '/profile'
     | '/creator/$creatorId'
+    | '/map/$experienceId'
+    | '/map'
     | '/experience/$experienceId/run'
     | '/experience/$experienceId'
   id:
@@ -109,6 +131,8 @@ export interface FileRouteTypes {
     | '/my-experiences'
     | '/profile'
     | '/creator/$creatorId'
+    | '/map/$experienceId'
+    | '/map/'
     | '/experience/$experienceId/run'
     | '/experience/$experienceId/'
   fileRoutesById: FileRoutesById
@@ -119,6 +143,8 @@ export interface RootRouteChildren {
   MyExperiencesRoute: typeof MyExperiencesRoute
   ProfileRoute: typeof ProfileRoute
   CreatorCreatorIdRoute: typeof CreatorCreatorIdRoute
+  MapExperienceIdRoute: typeof MapExperienceIdRoute
+  MapIndexRoute: typeof MapIndexRoute
   ExperienceExperienceIdRunRoute: typeof ExperienceExperienceIdRunRoute
   ExperienceExperienceIdIndexRoute: typeof ExperienceExperienceIdIndexRoute
 }
@@ -160,6 +186,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreatorCreatorIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/map/': {
+      id: '/map/'
+      path: '/map'
+      fullPath: '/map/'
+      preLoaderRoute: typeof MapIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/map/$experienceId': {
+      id: '/map/$experienceId'
+      path: '/map/$experienceId'
+      fullPath: '/map/$experienceId'
+      preLoaderRoute: typeof MapExperienceIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/experience/$experienceId/': {
       id: '/experience/$experienceId/'
       path: '/experience/$experienceId'
@@ -183,6 +223,8 @@ const rootRouteChildren: RootRouteChildren = {
   MyExperiencesRoute: MyExperiencesRoute,
   ProfileRoute: ProfileRoute,
   CreatorCreatorIdRoute: CreatorCreatorIdRoute,
+  MapExperienceIdRoute: MapExperienceIdRoute,
+  MapIndexRoute: MapIndexRoute,
   ExperienceExperienceIdRunRoute: ExperienceExperienceIdRunRoute,
   ExperienceExperienceIdIndexRoute: ExperienceExperienceIdIndexRoute,
 }
