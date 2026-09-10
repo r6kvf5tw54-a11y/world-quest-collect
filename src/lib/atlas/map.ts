@@ -14,11 +14,11 @@ export const CITY_POINTS: Record<string, MapPoint> = {
 /** Where each stop sits inside its experience map. */
 export const STOP_POINTS: Record<string, MapPoint> = {
   // Louvre floor plan — Denon & Sully wings
-  "mona-lisa": { x: 55, y: 63, area: "Denon · Salle des États" },
-  cana: { x: 63, y: 66, area: "Denon · Salle des États" },
-  liberty: { x: 44, y: 72, area: "Denon · Room 700" },
-  coronation: { x: 36, y: 66, area: "Denon · Room 702" },
-  venus: { x: 76, y: 46, area: "Sully · Room 346" },
+  "mona-lisa": { x: 57, y: 65, area: "Denon · Salle des États" },
+  cana: { x: 64, y: 71, area: "Denon · Salle des États" },
+  liberty: { x: 42, y: 75, area: "Denon · Room 700" },
+  coronation: { x: 28, y: 72, area: "Denon · Room 702" },
+  venus: { x: 77, y: 58, area: "Sully · Room 346" },
   // Paris coffee route
   substance: { x: 20, y: 58, area: "16th arr. · rue de Chaillot" },
   motors: { x: 74, y: 66, area: "11th arr. · rue Saint-Sabin" },

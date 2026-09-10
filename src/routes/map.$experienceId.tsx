@@ -83,7 +83,7 @@ function VenueMap() {
       <div className="px-5 pt-4">
         <MapSurface
           plan={experience.category === "Art" ? "louvre" : "city"}
-          className="h-[360px]"
+          className="h-[390px]"
         >
           {experience.stops.map((stop, i) => {
             const p = stopPoint(stop.id);
