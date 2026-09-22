@@ -65,12 +65,21 @@ function CollectionPage() {
                       key={`${item.experienceId}-${item.stopId}`}
                       className="card-soft flex items-center gap-3 p-3"
                     >
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        loading="lazy"
-                        className="h-16 w-16 shrink-0 rounded-xl object-cover"
-                      />
+                      <div className="relative shrink-0">
+                        <img
+                          src={item.photo ?? item.image}
+                          alt={item.title}
+                          loading="lazy"
+                          className="h-16 w-16 rounded-xl object-cover"
+                        />
+                        {item.photo ? (
+                          <img
+                            src={item.image}
+                            alt=""
+                            className="absolute -bottom-1.5 -right-1.5 h-7 w-7 rounded-md border-2 border-background object-cover"
+                          />
+                        ) : null}
+                      </div>
                       <div className="min-w-0">
                         <p className="truncate text-sm font-semibold text-foreground">
                           {item.title}
