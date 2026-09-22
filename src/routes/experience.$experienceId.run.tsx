@@ -12,8 +12,11 @@ import {
 } from "lucide-react";
 import { AppShell } from "@/components/atlas/AppShell";
 import { CheckInOverlay } from "@/components/atlas/CheckInOverlay";
+import { GeoMap } from "@/components/atlas/GeoMap";
 import { Button } from "@/components/ui/button";
 import { ACHIEVEMENTS, getExperience } from "@/lib/atlas/data";
+import { distanceMeters, formatDistance, stopGeo } from "@/lib/atlas/geo";
+import { useGeo } from "@/lib/atlas/useGeo";
 import {
   checkIn,
   nextStopIndex,
