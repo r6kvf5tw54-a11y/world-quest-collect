@@ -11,13 +11,26 @@ export function CheckInOverlay({
   onContinue: () => void;
 }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/95 px-6 backdrop-blur-md">
+    <div className="fixed inset-0 z-[1200] flex items-center justify-center bg-ink/95 px-6 backdrop-blur-md">
       <div className="w-full max-w-[340px] animate-fade-in text-center">
-        <div className="mx-auto grid h-20 w-20 animate-scale-in place-items-center rounded-full bg-accent/15 ring-1 ring-accent/40">
-          <div className="grid h-14 w-14 place-items-center rounded-full bg-accent text-ink">
-            <Check className="h-7 w-7" strokeWidth={2.5} />
+        {result.photo ? (
+          <div className="relative mx-auto h-44 w-44 animate-scale-in">
+            <img
+              src={result.photo}
+              alt={result.stopTitle}
+              className="h-full w-full rounded-[28px] object-cover ring-2 ring-accent/60 shadow-elevated"
+            />
+            <span className="absolute -bottom-3 left-1/2 grid h-10 w-10 -translate-x-1/2 place-items-center rounded-full bg-accent text-ink ring-4 ring-ink">
+              <Check className="h-5 w-5" strokeWidth={2.5} />
+            </span>
           </div>
-        </div>
+        ) : (
+          <div className="mx-auto grid h-20 w-20 animate-scale-in place-items-center rounded-full bg-accent/15 ring-1 ring-accent/40">
+            <div className="grid h-14 w-14 place-items-center rounded-full bg-accent text-ink">
+              <Check className="h-7 w-7" strokeWidth={2.5} />
+            </div>
+          </div>
+        )}
 
         <p className="mt-8 text-[11px] font-semibold uppercase tracking-[0.42em] text-accent">
           Found
@@ -50,9 +63,7 @@ export function CheckInOverlay({
               <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-accent">
                 Achievement unlocked
               </p>
-              <p className="mt-1 text-sm font-semibold text-inverse">
-                {ACHIEVEMENTS[id]?.title}
-              </p>
+              <p className="mt-1 text-sm font-semibold text-inverse">{ACHIEVEMENTS[id]?.title}</p>
               <p className="text-xs text-inverse/60">{ACHIEVEMENTS[id]?.description}</p>
             </div>
           </div>
