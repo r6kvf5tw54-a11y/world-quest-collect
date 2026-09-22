@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
   ArrowLeft,
   Award,
+  Camera,
   Check,
   Crosshair,
   Footprints,
@@ -14,6 +15,7 @@ import {
   Radar,
 } from "lucide-react";
 import { AppShell } from "@/components/atlas/AppShell";
+import { CameraCapture } from "@/components/atlas/CameraCapture";
 import { CheckInOverlay } from "@/components/atlas/CheckInOverlay";
 import { GeoMap } from "@/components/atlas/GeoMap";
 import type { LiveMarker } from "@/components/atlas/LiveMap";
@@ -59,6 +61,7 @@ function RunPage() {
   const [playing, setPlaying] = useState(false);
   const [synced, setSynced] = useState(false);
   const [forcedArrival, setForcedArrival] = useState(false);
+  const [camera, setCamera] = useState(false);
 
   const total = experience?.stops.length ?? 0;
   const doneStops = useMemo(
@@ -138,8 +141,9 @@ function RunPage() {
   const discovered = doneStops.length;
   const pct = Math.round((discovered / total) * 100);
 
-  function handleCheckIn() {
-    const res = checkIn(experienceId, stop.id);
+  function handleCheckIn(photo?: string) {
+    setCamera(false);
+    const res = checkIn(experienceId, stop.id, photo);
     setResult(res);
   }
 
@@ -193,7 +197,11 @@ function RunPage() {
             {experience.stops.map((s) => (
               <div key={s.id} className="card-soft flex items-center gap-3 p-3">
                 <img
-                  src={s.image}
+                  src={
+                    state.collection.find(
+                      (c) => c.stopId === s.id && c.experienceId === experienceId,
+                    )?.photo ?? s.image
+                  }
                   alt={s.title}
                   loading="lazy"
                   className="h-14 w-14 shrink-0 rounded-xl object-cover"
@@ -235,6 +243,19 @@ function RunPage() {
   return (
     <AppShell>
       {result ? <CheckInOverlay result={result} onContinue={continueFromOverlay} /> : null}
+      {camera ? (
+        <CameraCapture
+          title={stop.title}
+          subtitle={
+            experience.category === "Art"
+              ? "Point the camera at the artwork and take a photo to collect it."
+              : "Snap the place — your cup, the counter, the sign — to collect it."
+          }
+          hint={stop.image}
+          onCapture={handleCheckIn}
+          onCancel={() => setCamera(false)}
+        />
+      ) : null}
 
       <div className="px-5 pt-6">
         <div className="flex items-center justify-between">
@@ -314,8 +335,13 @@ function RunPage() {
           ) : null}
 
           {arrived ? (
-            <Button variant="accent" size="xl" className="mt-5 w-full" onClick={handleCheckIn}>
-              <MapPin className="h-4 w-4" /> CHECK IN
+            <Button
+              variant="accent"
+              size="xl"
+              className="mt-5 w-full"
+              onClick={() => setCamera(true)}
+            >
+              <Camera className="h-4 w-4" /> CHECK IN WITH CAMERA
             </Button>
           ) : (
             <Button variant="hero" size="xl" className="mt-5 w-full" disabled>
