@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Check, Crosshair, Footprints, MapPin, Navigation, Radar } from "lucide-react";
+import { Camera, Check, Crosshair, Footprints, Navigation, Radar } from "lucide-react";
 import { GeoMap } from "@/components/atlas/GeoMap";
 import type { LiveMarker } from "@/components/atlas/LiveMap";
+import { CameraCapture } from "@/components/atlas/CameraCapture";
 import { CheckInOverlay } from "@/components/atlas/CheckInOverlay";
 import { Button } from "@/components/ui/button";
 import { EXPERIENCES, getExperience, type Stop } from "@/lib/atlas/data";
@@ -29,10 +30,9 @@ export function GeoRadar({ experienceId }: { experienceId?: string }) {
   const geo = useGeo();
   const [openId, setOpenId] = useState<string | null>(null);
   const [result, setResult] = useState<CheckInResult | null>(null);
+  const [cameraFor, setCameraFor] = useState<Target | null>(null);
 
-  const experiences = experienceId
-    ? [getExperience(experienceId)].filter(Boolean)
-    : EXPERIENCES;
+  const experiences = experienceId ? [getExperience(experienceId)].filter(Boolean) : EXPERIENCES;
   const anchor = venueGeo(experienceId ?? EXPERIENCES[0]!.id);
 
   const targets = useMemo<Target[]>(() => {
@@ -71,8 +71,9 @@ export function GeoRadar({ experienceId }: { experienceId?: string }) {
     state: t.collected ? "collected" : t.inRange ? "inRange" : "locked",
   }));
 
-  function handleCheckIn(t: Target) {
-    setResult(checkIn(t.experienceId, t.stop.id));
+  function handleCheckIn(t: Target, photo?: string) {
+    setCameraFor(null);
+    setResult(checkIn(t.experienceId, t.stop.id, photo));
   }
 
   const statusLabel =
@@ -102,6 +103,16 @@ export function GeoRadar({ experienceId }: { experienceId?: string }) {
               search: { stop: target.stop.id },
             });
           }}
+        />
+      ) : null}
+
+      {cameraFor ? (
+        <CameraCapture
+          title={cameraFor.stop.title}
+          subtitle="Point the camera at it and take a photo to collect it."
+          hint={cameraFor.stop.image}
+          onCapture={(photo) => handleCheckIn(cameraFor, photo)}
+          onCancel={() => setCameraFor(null)}
         />
       ) : null}
 
@@ -140,8 +151,8 @@ export function GeoRadar({ experienceId }: { experienceId?: string }) {
 
         {geo.status === "denied" ? (
           <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-            Location is blocked in your browser. Allow it to play for real, or use demo walk
-            mode to test the loop from here.
+            Location is blocked in your browser. Allow it to play for real, or use demo walk mode to
+            test the loop from here.
           </p>
         ) : null}
 
@@ -180,10 +191,10 @@ export function GeoRadar({ experienceId }: { experienceId?: string }) {
                 variant="accent"
                 size="xl"
                 className="mt-4 w-full"
-                onClick={() => handleCheckIn(selected)}
+                onClick={() => setCameraFor(selected)}
               >
-                <MapPin className="h-4 w-4" />
-                {selected.collected ? "Check in again" : "CHECK IN HERE"}
+                <Camera className="h-4 w-4" />
+                {selected.collected ? "Check in again" : "CHECK IN WITH CAMERA"}
               </Button>
             ) : (
               <Button variant="hero" size="xl" className="mt-4 w-full" disabled>
