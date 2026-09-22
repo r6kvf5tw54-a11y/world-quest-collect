@@ -22,6 +22,8 @@ export type LiveMapProps = {
   selectedId?: string | undefined;
   onSelect?: ((id: string) => void) | undefined;
   follow?: boolean | undefined;
+  /** When set, the view fits the player and the selected marker together (re-fits when it changes). */
+  fitKey?: string | undefined;
 };
 
 const TONE: Record<LiveMarker["state"], { bg: string; fg: string; ring: string }> = {
@@ -40,12 +42,14 @@ export default function LiveMap({
   selectedId,
   onSelect,
   follow = true,
+  fitKey,
 }: LiveMapProps) {
   const holder = useRef<HTMLDivElement | null>(null);
   const map = useRef<L.Map | null>(null);
   const layer = useRef<L.LayerGroup | null>(null);
   const userLayer = useRef<L.LayerGroup | null>(null);
   const centred = useRef(false);
+  const lastFit = useRef<string | undefined>(undefined);
 
   // Create the map once.
   useEffect(() => {
@@ -126,14 +130,23 @@ export default function LiveMap({
     L.marker([user.lat, user.lng], { icon, title: "You", zIndexOffset: 500 }).addTo(g);
 
     if (follow && map.current) {
-      if (!centred.current) {
+      const target = fitKey ? markers.find((mk) => mk.id === selectedId) : undefined;
+      if (target && lastFit.current !== fitKey) {
+        lastFit.current = fitKey;
+        centred.current = true;
+        map.current.fitBounds(
+          L.latLngBounds([user.lat, user.lng], [target.lat, target.lng]).pad(0.35),
+          { animate: true, maxZoom: 19 },
+        );
+      } else if (!centred.current) {
         map.current.setView([user.lat, user.lng], zoom);
         centred.current = true;
       } else {
         map.current.panTo([user.lat, user.lng], { animate: true });
       }
     }
-  }, [user, accuracy, follow, zoom]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, accuracy, follow, zoom, fitKey]);
 
   return <div ref={holder} className="h-full w-full" />;
 }
