@@ -18,6 +18,8 @@ export type CollectedItem = {
   category: string;
   date: string;
   image: string;
+  /** The player's own photo of the object (JPEG data URL), when captured. */
+  photo?: string | undefined;
 };
 
 export type AtlasState = {
@@ -129,9 +131,10 @@ export type CheckInResult = {
   xp: number;
   newAchievements: string[];
   experienceComplete: boolean;
+  photo?: string | undefined;
 };
 
-export function checkIn(experienceId: string, stopId: string): CheckInResult {
+export function checkIn(experienceId: string, stopId: string, photo?: string): CheckInResult {
   const experience = getExperience(experienceId)!;
   const stop = experience.stops.find((s) => s.id === stopId)!;
   let result: CheckInResult = {
@@ -141,6 +144,7 @@ export function checkIn(experienceId: string, stopId: string): CheckInResult {
     xp: XP_PER_STOP,
     newAchievements: [],
     experienceComplete: false,
+    photo,
   };
 
   set((s) => {
@@ -173,6 +177,7 @@ export function checkIn(experienceId: string, stopId: string): CheckInResult {
       xp: gained,
       newAchievements: unlocked.filter((id) => ACHIEVEMENTS[id]),
       experienceComplete: complete,
+      photo,
     };
 
     return {
@@ -196,6 +201,7 @@ export function checkIn(experienceId: string, stopId: string): CheckInResult {
           category: experience.category,
           date: today(),
           image: stop.image,
+          photo,
         },
       ],
       achievements: [...s.achievements, ...unlocked],
