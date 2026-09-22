@@ -1,8 +1,8 @@
 import { useSyncExternalStore } from "react";
+import { formatDate } from "date-fns";
 import {
   ACHIEVEMENTS,
   BASE_XP,
-  DEMO_DATE,
   EXPERIENCES,
   XP_PER_COMPLETION,
   XP_PER_STOP,
@@ -90,13 +90,16 @@ export function useAtlas() {
   );
 }
 
+/** Today, formatted like "22 Sep 2026". */
+function today() {
+  return formatDate(new Date(), "d MMM yyyy");
+}
+
 /* ---------- actions ---------- */
 
 export function purchase(experienceId: string) {
   set((s) =>
-    s.purchased.includes(experienceId)
-      ? s
-      : { ...s, purchased: [...s.purchased, experienceId] },
+    s.purchased.includes(experienceId) ? s : { ...s, purchased: [...s.purchased, experienceId] },
   );
 }
 
@@ -174,14 +177,12 @@ export function checkIn(experienceId: string, stopId: string): CheckInResult {
 
     return {
       ...s,
-      purchased: s.purchased.includes(experienceId)
-        ? s.purchased
-        : [...s.purchased, experienceId],
+      purchased: s.purchased.includes(experienceId) ? s.purchased : [...s.purchased, experienceId],
       progress: {
         ...s.progress,
         [experienceId]: {
           completedStops,
-          completedAt: complete ? DEMO_DATE : s.progress[experienceId]?.completedAt,
+          completedAt: complete ? today() : s.progress[experienceId]?.completedAt,
         },
       },
       collection: [
@@ -193,7 +194,7 @@ export function checkIn(experienceId: string, stopId: string): CheckInResult {
           venue: stop.venue,
           city: stop.city,
           category: experience.category,
-          date: DEMO_DATE,
+          date: today(),
           image: stop.image,
         },
       ],
