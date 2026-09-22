@@ -133,3 +133,17 @@
     oklch(0.19 0.016 60 / 0) 100%
   );
 }
+
+@keyframes scan {
+  0% {
+    top: 12%;
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    top: 88%;
+    opacity: 0.2;
+  }
+}
